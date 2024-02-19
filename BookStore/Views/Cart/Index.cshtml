@@ -1,0 +1,57 @@
+﻿@using System.Globalization;
+@model BookStore.Models.Cart.CartViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Cart</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Book</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var book in Model.books) {
+        <tr>
+            <td>
+                Title: @book.Title <br>
+                Author: @book.FirstName @book.LastName <br>
+                ISBN: @book.Isbn
+            </td>
+            <td>
+                @book.Price.ToString("C", new CultureInfo("nl-BE"))
+            </td>
+            <td>
+                @book.Quantity
+            </td>
+            <td>
+                    @book.Quantity x @book.Price.ToString("C", new CultureInfo("nl-BE")) = @book.Subtotal.ToString("C", new CultureInfo("nl-BE"))
+            </td>
+            <td>
+                <form asp-controller="Cart" asp-action="Remove" method="post" class="d-inline">
+                    @Html.Hidden("id", value: book.Id)
+                    <input type="submit" value="Remove" class="btn btn-danger" />
+                </form>
+            </td>
+        </tr>
+}
+        <tr>
+            <td colspan="3" class="table-active">Total:</td>
+            <td>@Model.Total.ToString("C", new CultureInfo("nl-BE"))</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<div>
+    <a asp-controller="Order" asp-action="Checkout" class="btn btn-success">Checkout</a>
+    <a asp-controller="Cart" asp-action="Clear" class="btn btn-danger">Clear</a>
+</div>

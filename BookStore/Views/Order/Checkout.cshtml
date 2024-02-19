@@ -1,0 +1,71 @@
+﻿@model BookStore.Models.Order.CheckoutViewModel;
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h1>Checkout</h1>
+
+<h4>Overview</h4>
+<hr />
+<ul>
+    @foreach(var item in Model.Overviews)
+    {
+        <li>@item.Quantity x @item.Title</li>
+    }
+</ul>
+<h4>Delivery Details</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Order" asp-action="Checkout">
+            @for (int i = 0; i < Model.Overviews.Count; i++)
+            {
+                 <input type="hidden" asp-for="Overviews[@i]" name="Overviews.[@i]"/>
+                <input type="hidden" asp-for="Overviews[@i].Id" name="Overviews.[@i].Id"/>
+                <input type="hidden" asp-for="Overviews[@i].Title" name="Overviews.[@i].Title" />
+                <input type="hidden" asp-for="Overviews[@i].Quantity" name="Overviews.[@i].Quantity" />
+            }
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DeliveryDetails.FirstName" class="control-label"></label>
+                <input asp-for="DeliveryDetails.FirstName" class="form-control" />
+                <span asp-validation-for="DeliveryDetails.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryDetails.LastName" class="control-label"></label>
+                <input asp-for="DeliveryDetails.LastName" class="form-control" />
+                <span asp-validation-for="DeliveryDetails.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryDetails.Street" class="control-label"></label>
+                <input asp-for="DeliveryDetails.Street" class="form-control" />
+                <span asp-validation-for="DeliveryDetails.Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryDetails.Number" class="control-label"></label>
+                <input asp-for="DeliveryDetails.Number" class="form-control" />
+                <span asp-validation-for="DeliveryDetails.Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryDetails.Zip" class="control-label"></label>
+                <input asp-for="DeliveryDetails.Zip" class="form-control" />
+                <span asp-validation-for="DeliveryDetails.Zip" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryDetails.City" class="control-label"></label>
+                <input asp-for="DeliveryDetails.City" class="form-control" />
+                <span asp-validation-for="DeliveryDetails.City" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Confirm Order" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

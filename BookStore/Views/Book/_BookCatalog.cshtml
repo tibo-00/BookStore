@@ -1,0 +1,38 @@
+﻿@using System.Globalization;
+@model IEnumerable<BookStore.Models.Book.CatalogusViewModel>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService authService
+
+<div class="row">
+    @foreach (var book in Model)
+    {
+        <div class="col-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        @{
+                            var imgFileName = book.ImageURL;
+                        }
+                        <img class="card-img-top" src="~/images/@imgFileName" alt="cover image" />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Title</h5>
+                            <p class="card-subtitle text-muted">@book.FirstName @book.LastName</p><br>
+                            <p class="card-text"><span class="fw-bold">Price:</span> @book.Price.ToString("C", new CultureInfo("nl-BE"))</p>
+                            <p class="card-text"><span class="fw-bold">Genre:</span> @book.GenreName</p><br>
+                            <div class="row justify-content-between">
+                                <a asp-action="Details" asp-route-id="@book.Id" class="col">Details</a>
+                                @if (User.Identity.IsAuthenticated && User.HasClaim("CanManageCatalog", "true"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-primary col">Edit</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
